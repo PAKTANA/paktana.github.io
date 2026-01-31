@@ -730,49 +730,44 @@ window.AdminManagement = {
         const form = document.getElementById('contactEditForm');
         if (!form) return;
 
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            // In a real app, save to DB. For now, update DOM directly.
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
 
             const email = document.getElementById('editEmail').value;
             const phone = document.getElementById('editPhone').value;
-            const address = document.getElementById('editAddress').value.replace(/\n/g, '<br>');
+            const address = document.getElementById('editAddress').value; // Keep newlines for DB
             const fb = document.getElementById('editFb').value.trim();
             const ig = document.getElementById('editIg').value.trim();
             const tt = document.getElementById('editTt').value.trim();
 
-            // Update UI (Footer)
-            document.getElementById('footerEmail').innerText = email;
-            document.getElementById('footerPhone').innerText = phone;
-            document.getElementById('footerAddress').innerHTML = address;
+            try {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '⏳ กำลังบันทึก...';
 
-            // Update UI (Contact Page)
-            const pageEmail = document.getElementById('pageContactEmail');
-            const pagePhone = document.getElementById('pageContactPhone');
-            const pageAddress = document.getElementById('pageContactAddress');
-            if (pageEmail) pageEmail.innerText = email;
-            if (pagePhone) pagePhone.innerText = phone;
-            if (pageAddress) pageAddress.innerHTML = address;
+                await window.SettingsService.updateMultipleSettings([
+                    { key: 'contact_email', value: email },
+                    { key: 'contact_phone', value: phone },
+                    { key: 'contact_address', value: address },
+                    { key: 'social_fb', value: fb || '#' },
+                    { key: 'social_ig', value: ig || '#' },
+                    { key: 'social_tt', value: tt || '#' }
+                ]);
 
-            const socialContainer = document.getElementById('footerSocials');
-            const pageSocialContainer = document.getElementById('pageContactSocials');
-            let socialHtml = '';
+                // UI will be updated by loadSiteSettings() if realtime is on, 
+                // but let's call it explicitly for immediate feedback
+                if (window.loadSiteSettings) await window.loadSiteSettings();
 
-            if (fb && fb !== '#') {
-                socialHtml += `<a href="${fb}" target="_blank" class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white hover:bg-blue-500 transition-colors"><i class="fab fa-facebook-f"></i></a>`;
+                window.Helpers.showSuccessToast('บันทึกข้อมูลติดต่อเรียบร้อย');
+                window.Modals.closeModal('contactEditModal');
+            } catch (err) {
+                console.error(err);
+                alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล: ' + err.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
             }
-            if (ig && ig !== '#') {
-                socialHtml += `<a href="${ig}" target="_blank" class="w-10 h-10 rounded-full bg-pink-600 flex items-center justify-center text-white hover:bg-pink-500 transition-colors"><i class="fab fa-instagram"></i></a>`;
-            }
-            if (tt && tt !== '#') {
-                socialHtml += `<a href="${tt}" target="_blank" class="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white hover:bg-gray-800 transition-colors"><i class="fab fa-tiktok"></i></a>`;
-            }
-
-            socialContainer.innerHTML = socialHtml;
-            if (pageSocialContainer) pageSocialContainer.innerHTML = socialHtml;
-
-            window.Helpers.showSuccessToast('บันทึกข้อมูลติดต่อเรียบร้อย');
-            window.Modals.closeModal('contactEditModal');
         });
     },
 
@@ -793,18 +788,34 @@ window.AdminManagement = {
         const form = document.getElementById('summaryEditForm');
         if (!form) return;
 
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
 
             const heading = document.getElementById('editSummaryHeading').value;
             const intro = document.getElementById('editSummaryIntro').value;
 
-            // Update UI
-            document.getElementById('summaryHeading').innerText = heading;
-            document.getElementById('summaryIntro').innerText = intro;
+            try {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '⏳ กำลังบันทึก...';
 
-            window.Helpers.showSuccessToast('บันทึกข้อมูลหน้าแรกเรียบร้อย');
-            window.Modals.closeModal('summaryEditModal');
+                await window.SettingsService.updateMultipleSettings([
+                    { key: 'home_summary_heading', value: heading },
+                    { key: 'home_summary_intro', value: intro }
+                ]);
+
+                if (window.loadSiteSettings) await window.loadSiteSettings();
+
+                window.Helpers.showSuccessToast('บันทึกข้อมูลหน้าแรกเรียบร้อย');
+                window.Modals.closeModal('summaryEditModal');
+            } catch (err) {
+                console.error(err);
+                alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล: ' + err.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            }
         });
     }
 };

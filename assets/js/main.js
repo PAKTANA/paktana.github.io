@@ -23,6 +23,9 @@ async function initApp() {
     window.AppState.isAdminLoggedIn = await window.AdminAuth.checkSession();
     if (window.Helpers.checkAdminAuth) window.Helpers.checkAdminAuth();
 
+    // 1.5 Load persistent settings
+    await loadSiteSettings();
+
     // 2. Initialize UI Components
     window.Navigation.init();
     if (window.AdminManagement) window.AdminManagement.init();
@@ -72,7 +75,85 @@ function setupRealtimeUpdates() {
         .on('postgres_changes', { event: '*', schema: 'public', table: 'hero_slides' }, () => {
             window.fetchHeroSlides();
         })
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'site_settings' }, () => {
+            loadSiteSettings();
+        })
         .subscribe();
+}
+
+async function loadSiteSettings() {
+    try {
+        const settings = await window.SettingsService.fetchSettings();
+        const config = {};
+
+        // Default values as per user request
+        const defaults = {
+            'contact_email': '-',
+            'contact_phone': '-',
+            'contact_address': '-',
+            'social_fb': '#',
+            'social_ig': '#',
+            'social_tt': '#',
+            'home_summary_heading': 'นโยบายหลักของเรา',
+            'home_summary_intro': 'PAKTANA มุ่งมั่นพัฒนาการศึกษาไทยด้วย 4 นโยบายหลักที่ครอบคลุมทุกมิติ'
+        };
+
+        settings.forEach(s => config[s.key] = s.value);
+
+        const email = config['contact_email'] || defaults['contact_email'];
+        const phone = config['contact_phone'] || defaults['contact_phone'];
+        const address = config['contact_address'] || defaults['contact_address'];
+        const fb = config['social_fb'] || defaults['social_fb'];
+        const ig = config['social_ig'] || defaults['social_ig'];
+        const tt = config['social_tt'] || defaults['social_tt'];
+        const summaryHeading = config['home_summary_heading'] || defaults['home_summary_heading'];
+        const summaryIntro = config['home_summary_intro'] || defaults['home_summary_intro'];
+
+        // Update UI (Summary)
+        const sHeading = document.getElementById('summaryHeading');
+        const sIntro = document.getElementById('summaryIntro');
+        if (sHeading) sHeading.innerText = summaryHeading;
+        if (sIntro) sIntro.innerText = summaryIntro;
+
+        // Update UI (Footer)
+        const fEmail = document.getElementById('footerEmail');
+        const fPhone = document.getElementById('footerPhone');
+        const fAddress = document.getElementById('footerAddress');
+        const fSocials = document.getElementById('footerSocials');
+
+        if (fEmail) fEmail.innerText = email;
+        if (fPhone) fPhone.innerText = phone;
+        if (fAddress) fAddress.innerHTML = address.replace(/\n/g, '<br>');
+
+        // Update Socials (Footer)
+        if (fSocials) {
+            let socialHtml = '';
+            if (fb && fb !== '#') {
+                socialHtml += `<a href="${fb}" target="_blank" class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white hover:bg-blue-500 transition-colors"><i class="fab fa-facebook-f"></i></a>`;
+            }
+            if (ig && ig !== '#') {
+                socialHtml += `<a href="${ig}" target="_blank" class="w-10 h-10 rounded-full bg-pink-600 flex items-center justify-center text-white hover:bg-pink-500 transition-colors"><i class="fab fa-instagram"></i></a>`;
+            }
+            if (tt && tt !== '#') {
+                socialHtml += `<a href="${tt}" target="_blank" class="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white hover:bg-gray-800 transition-colors"><i class="fab fa-tiktok"></i></a>`;
+            }
+            fSocials.innerHTML = socialHtml;
+        }
+
+        // Update Contact Page if exists
+        const pEmail = document.getElementById('pageContactEmail');
+        const pPhone = document.getElementById('pageContactPhone');
+        const pAddress = document.getElementById('pageContactAddress');
+        const pSocials = document.getElementById('pageContactSocials');
+
+        if (pEmail) pEmail.innerText = email;
+        if (pPhone) pPhone.innerText = phone;
+        if (pAddress) pAddress.innerHTML = address.replace(/\n/g, '<br>');
+        if (pSocials && fSocials) pSocials.innerHTML = fSocials.innerHTML;
+
+    } catch (err) {
+        console.error('Error loading site settings:', err);
+    }
 }
 
 // Handler for "Propose Policy" (formerly Contact)

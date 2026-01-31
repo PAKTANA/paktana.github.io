@@ -83,6 +83,10 @@ window.AdminAuth = {
                 await window.fetchHeroSlides();
             }
 
+            if (window.loadSiteSettings) {
+                await window.loadSiteSettings();
+            }
+
             // 2. FORCE UI Update again for any static or newly created elements
             if (window.Helpers && window.Helpers.checkAdminAuth) {
                 window.Helpers.checkAdminAuth();
