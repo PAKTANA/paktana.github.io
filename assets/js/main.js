@@ -1,8 +1,5 @@
-// Replace this with your actual Google Apps Script Web App URL for Policy Proposals
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzUYk9O3Rk1Ahso7EjzNkdQW2nDM5zbZfh-P-Jycd8gvqP2FSXx0ohhRkWluaWA18LL/exec';
-
-// TODO: Replace this with your NEW Google Apps Script Web App URL for the Contact Us form
-const GOOGLE_SCRIPT_CONTACT_NEW_URL = '';
+// Google Apps Script Web App URL (Handles both Policy Proposals and Contact Us)
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyWfygOuyQHdkGBTtD6qhggx04467cAdmojemPphQpN4kY4I4NZvgc7mmOLHwipooZ5/exec';
 
 window.AppState = {
     memberData: {},
@@ -156,17 +153,11 @@ function setupContactUsNewForm() {
             return;
         }
 
-        // Alert user if they haven't set the URL yet
-        if (!GOOGLE_SCRIPT_CONTACT_NEW_URL) {
-            alert('กรุณาตั้งค่า GOOGLE_SCRIPT_CONTACT_NEW_URL ในไฟล์ main.js ก่อนใช้งาน (หรือแจ้งผู้ดูแลระบบ)');
-            return;
-        }
-
         submitBtn.innerText = 'กำลังส่ง...';
         submitBtn.disabled = true;
 
         try {
-            await fetch(GOOGLE_SCRIPT_CONTACT_NEW_URL, {
+            await fetch(GOOGLE_SCRIPT_URL, {
                 method: 'POST',
                 mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
