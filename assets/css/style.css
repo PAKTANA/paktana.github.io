@@ -669,11 +669,13 @@ body.admin-active {
 
 .nav-link {
     position: relative;
-    padding: 8px 20px;
+    padding: 8px 12px;
     color: #1e293b;
     font-weight: 600;
     transition: all 0.3s ease;
     border-radius: 8px;
+    white-space: nowrap;
+    font-size: 15px;
 }
 
 .nav-link:hover {
