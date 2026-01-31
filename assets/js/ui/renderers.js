@@ -773,33 +773,42 @@ window.Renderers = {
 
         if (!slides || slides.length === 0) {
             slider.innerHTML = `
-                <div class="slide active" style="background-color: #1e293b;">
-                    ${adminBtn}
-                    <div class="slide-content text-center">
-                        <div class="text-6xl mb-4">🖼️</div>
-                        <h2 class="text-3xl md:text-5xl font-bold text-white mb-2">ยินดีต้อนรับ</h2>
-                        <p class="text-gray-400 text-lg">${window.AppState.isAdminLoggedIn ? 'ยังไม่มีรูปสไลด์เริ่มต้น (คลิกปุ่มขวาบนเพื่อจัดการ)' : 'Welcome to Student Council'}</p>
+                <div class="slider-track" id="sliderTrack">
+                    <div class="slide active" style="background-color: #1e293b;">
+                        <div class="slide-content text-center">
+                            <div class="text-6xl mb-4">🖼️</div>
+                            <h2 class="text-3xl md:text-5xl font-bold text-white mb-2">ยินดีต้อนรับ</h2>
+                            <p class="text-gray-400 text-lg">${window.AppState.isAdminLoggedIn ? 'ยังไม่มีรูปสไลด์เริ่มต้น (คลิกปุ่มขวาบนเพื่อจัดการ)' : 'Welcome to Student Council'}</p>
+                        </div>
                     </div>
-                </div>`;
+                </div>
+                ${adminBtn}`;
             return;
         }
 
-        slider.innerHTML = slides.map((s, i) => `
+        const slidesHtml = slides.map((s, i) => `
             <div class="slide ${i === 0 ? 'active' : ''}" style="background-image: url('${s.image_url}')">
                 <div class="slide-overlay"></div>
-                ${adminBtn}
+                <div class="slide-content">
+                    <h1 class="text-4xl md:text-6xl font-bold mb-4 font-serif text-shadow">${s.title}</h1>
+                    <p class="text-lg md:text-2xl text-gray-200 max-w-2xl mx-auto">${s.caption || ''}</p>
+                </div>
             </div>
         `).join('');
 
-        // Generate dots
-        const dotsContainer = document.querySelector('.slider-nav');
-        if (dotsContainer) {
-            dotsContainer.innerHTML = slides.map((_, i) => `
-                <div class="slider-dot ${i === 0 ? 'active' : ''}" onclick="window.HeroSlider.goToSlide(${i})"></div>
-            `).join('');
-        }
-
-        window.HeroSlider.init();
+        slider.innerHTML = `
+            <div class="slider-track" id="sliderTrack">
+                ${slidesHtml}
+            </div>
+            ${adminBtn}
+            
+            <div class="slider-arrow left" onclick="window.changeSlide(-1)">❮</div>
+            <div class="slider-arrow right" onclick="window.changeSlide(1)">❯</div>
+            
+            <div class="slider-nav">
+                ${slides.map((_, i) => `<div class="slider-dot ${i === 0 ? 'active' : ''}" onclick="window.goToSlide(${i})"></div>`).join('')}
+            </div>
+        `;
     },
     // --- Utils ---
     setupSmoothScroll() {

@@ -39,15 +39,21 @@ window.HeroSlider = {
     showSlide(n) {
         const slides = document.querySelectorAll('.slide');
         const dots = document.querySelectorAll('.slider-dot');
-        if (slides.length === 0) return;
+        const track = document.getElementById('sliderTrack');
 
-        slides.forEach(s => s.classList.remove('active'));
+        if (slides.length === 0 || !track) return;
+
+        // Reset dots active state
         dots.forEach(d => d.classList.remove('active'));
 
+        // Calculate index
         this.currentSlide = (n + slides.length) % slides.length;
 
-        if (slides[this.currentSlide]) slides[this.currentSlide].classList.add('active');
+        // Update dots active state
         if (dots[this.currentSlide]) dots[this.currentSlide].classList.add('active');
+
+        // Apply Sliding Effect
+        track.style.transform = `translateX(-${this.currentSlide * 100}%)`;
     },
 
     changeSlide(direction) {
