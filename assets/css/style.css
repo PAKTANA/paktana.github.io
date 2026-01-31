@@ -112,6 +112,11 @@ body {
         font-size: 12px;
         border-width: 1.5px;
     }
+
+    /* Hide slider arrows on mobile */
+    .slider-arrow {
+        display: none !important;
+    }
 }
 
 /* Hide admin-only elements for visitors */

@@ -67,7 +67,8 @@ window.AdminAuth = {
 
     async refreshData() {
         try {
-            // Re-fetch and render all dynamic data to ensure admin controls appear/disappear
+            // 1. Re-render all data (Dynamic buttons depends on AppState.isAdminLoggedIn)
+            // Note: Renderers will inject edit buttons if isAdminLoggedIn is true
             const [members, policies, gallery] = await Promise.all([
                 window.MemberService.fetchMembers(),
                 window.PolicyService.fetchPolicies(),
@@ -81,6 +82,17 @@ window.AdminAuth = {
             if (window.fetchHeroSlides) {
                 await window.fetchHeroSlides();
             }
+
+            // 2. FORCE UI Update again for any static or newly created elements
+            if (window.Helpers && window.Helpers.checkAdminAuth) {
+                window.Helpers.checkAdminAuth();
+            }
+
+            const loggedIn = window.AppState.isAdminLoggedIn;
+            document.querySelectorAll('.admin-edit-btn').forEach(btn => {
+                btn.style.display = loggedIn ? 'block' : 'none';
+            });
+
         } catch (err) {
             console.error('Error refreshing data:', err);
         }
