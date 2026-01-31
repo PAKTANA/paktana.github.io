@@ -44,14 +44,10 @@ window.Renderers = {
         ];
 
         // 1. Home Page Leadership
+        // 1. Home Page Leadership
         if (homeLeadershipContainer) {
-            const presidents = members.filter(m => m.category === 'ประธาน' || (m.category === 'Leadership' && (m.position.includes('ประธาน') || m.rank === 1))).sort((a, b) => a.rank - b.rank);
-            const others = members.filter(m => m.category !== 'Member' && !presidents.includes(m)).sort((a, b) => a.rank - b.rank).slice(0, 8);
-
-            let html = '';
-            html += presidents.map(m => this.createMemberCard(m, true, true)).join('');
-            html += others.map(m => this.createMemberCard(m, true, true)).join('');
-            homeLeadershipContainer.innerHTML = html;
+            // User requested to hide members on home page, ensuring only "View All" button is visible below.
+            homeLeadershipContainer.innerHTML = '';
         }
 
         // 2. Full Leadership Page (Sectioned)
