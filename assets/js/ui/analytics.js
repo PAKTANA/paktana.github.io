@@ -31,24 +31,24 @@ window.AnalyticsUI = {
             const container = document.getElementById('analyticsPageViews');
             if (container) {
                 if (pageViews && pageViews.length > 0) {
-                    pageViews.sort((a, b) => b.view_count - a.view_count);
+                    pageViews.sort((a, b) => (b.views || 0) - (a.views || 0));
                     container.innerHTML = '';
 
-                    const maxViews = Math.max(...pageViews.map(v => v.view_count));
+                    const maxViews = Math.max(...pageViews.map(v => v.views || 0));
 
                     pageViews.forEach(row => {
-                        const label = labelsMap[row.page_id] || row.page_id;
-                        const percentage = (row.view_count / maxViews) * 100;
+                        const label = labelsMap[row.page_name] || row.page_name;
+                        const percentage = ((row.views || 0) / maxViews) * 100;
                         const el = document.createElement('div');
                         el.className = 'group p-4 bg-gray-50 rounded-2xl border border-gray-100 hover:border-blue-200 hover:bg-blue-50/30 transition-all duration-300';
                         el.innerHTML = `
                             <div class="flex justify-between items-start mb-2">
                                 <div class="flex items-center gap-2">
-                                    <span class="w-1.5 h-1.5 rounded-full ${row.view_count > (maxViews * 0.7) ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]' : 'bg-gray-300'}"></span>
+                                    <span class="w-1.5 h-1.5 rounded-full ${(row.views || 0) > (maxViews * 0.7) ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]' : 'bg-gray-300'}"></span>
                                     <span class="font-bold text-gray-800 text-sm">${label}</span>
                                 </div>
                                 <span class="bg-white px-2 py-0.5 rounded-lg border border-gray-100 text-[10px] font-black text-blue-600 shadow-sm">
-                                    ${row.view_count.toLocaleString()} Views
+                                    ${(row.views || 0).toLocaleString()} Views
                                 </span>
                             </div>
                             <div class="w-full h-1.5 bg-gray-200 rounded-full overflow-hidden">
@@ -82,11 +82,11 @@ window.AnalyticsUI = {
                         el.innerHTML = `
                             <div class="flex justify-between items-center mb-2">
                                 <div class="flex text-yellow-400 text-xs">
-                                    ${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}
+                                    ${'★'.repeat(r.rating || 0)}${'☆'.repeat(5 - (r.rating || 0))}
                                 </div>
                                 <span class="text-gray-400 text-[10px] font-bold uppercase tracking-tighter">${new Date(r.created_at).toLocaleDateString('th-TH')}</span>
                             </div>
-                            ${r.comment ? `<p class="text-gray-600 text-xs italic leading-relaxed">"${r.comment}"</p>` : '<p class="text-gray-300 text-[10px] italic">ไม่มีความเห็น</p>'}
+                            ${r.comment && r.comment !== 'EMPTY' ? `<p class="text-gray-600 text-xs italic leading-relaxed">"${r.comment}"</p>` : '<p class="text-gray-300 text-[10px] italic">ไม่มีความเห็น</p>'}
                         `;
                         feedbackList.appendChild(el);
                     });
@@ -110,10 +110,10 @@ window.AnalyticsUI = {
         const views = pageViews || [];
         if (window.analyticsChartInstance) window.analyticsChartInstance.destroy();
 
-        // Sort views for chart too
-        const sortedViews = [...views].sort((a, b) => b.view_count - a.view_count).slice(0, 8);
-        const labels = sortedViews.map(v => labelsMap[v.page_id] || v.page_id);
-        const data = sortedViews.map(v => v.view_count);
+        // Sort views for chart too and use 'page_name' and 'views'
+        const sortedViews = [...views].sort((a, b) => (b.views || 0) - (a.views || 0)).slice(0, 8);
+        const labels = sortedViews.map(v => labelsMap[v.page_name] || v.page_name);
+        const data = sortedViews.map(v => v.views || 0);
 
         window.analyticsChartInstance = new Chart(ctx, {
             type: 'bar',
