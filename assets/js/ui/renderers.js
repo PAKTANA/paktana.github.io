@@ -71,6 +71,11 @@ window.Renderers = {
                     const accentColor = cat.color.replace('border-', 'text-').replace('border-', 'bg-');
                     const borderColor = cat.color;
 
+                    // Determine Size
+                    let groupSize = 'small';
+                    if (cat.id === 'ประธาน' || cat.id === 'Leadership') groupSize = 'large';
+                    else if (cat.id === 'รองประธาน') groupSize = 'medium';
+
                     html += `
                     <div class="w-full mb-16 mt-24 flex flex-col items-center justify-center">
                         <div class="relative px-8 md:px-16 py-6 group">
@@ -91,8 +96,8 @@ window.Renderers = {
                         </div>
                     </div>`;
 
-                    html += `<div class="w-full grid grid-cols-1 md:grid-cols-2 gap-10 justify-items-center">`;
-                    html += group.map(m => this.createMemberCard(m, cat.id !== 'Member', false)).join('');
+                    html += `<div class="w-full flex flex-wrap justify-center gap-10 px-4">`;
+                    html += group.map(m => this.createMemberCard(m, cat.id !== 'Member', false, groupSize)).join('');
                     html += `</div>`;
                 }
             });
@@ -145,7 +150,7 @@ window.Renderers = {
         }
     },
 
-    createMemberCard(m, isLeader, isHome = true) {
+    createMemberCard(m, isLeader, isHome = true, size = 'small') {
         const photoHtml = m.photo_url
             ? `<img src="${m.photo_url}" alt="${m.name}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">`
             : `<div class="w-full h-full flex items-center justify-center bg-gray-100 text-4xl text-gray-400">👤</div>`;
@@ -214,17 +219,38 @@ window.Renderers = {
             `;
         }
 
-        // --- NEW: RED HORIZONTAL CARD FOR MEMBER DIRECTORY PAGE ---
+        // --- NEW: HIERARCHICAL HORIZONTAL CARD FOR MEMBER DIRECTORY PAGE ---
         if (!isHome) {
+            // Sizing Logic
+            let maxWidth = 'max-w-md';
+            let imgSize = 'w-24 h-32 md:w-36 md:h-48';
+            let nameSize = 'text-xl md:text-3xl';
+            let posSize = 'text-sm md:text-lg';
+            let padding = 'p-5 md:p-8';
+
+            if (size === 'large') {
+                maxWidth = 'max-w-4xl';
+                imgSize = 'w-32 h-44 md:w-56 md:h-72';
+                nameSize = 'text-3xl md:text-5xl';
+                posSize = 'text-lg md:text-2xl';
+                padding = 'p-8 md:p-12';
+            } else if (size === 'medium') {
+                maxWidth = 'max-w-2xl';
+                imgSize = 'w-28 h-38 md:w-44 md:h-60';
+                nameSize = 'text-2xl md:text-4xl';
+                posSize = 'text-base md:text-xl';
+                padding = 'p-6 md:p-10';
+            }
+
             return `
-                <div class="w-full group relative bg-gradient-to-br from-[#74040E] to-[#4a0309] rounded-[2rem] overflow-hidden shadow-lg hover:shadow-primary/30 transition-all duration-500 cursor-pointer border border-white/10" onclick="window.Renderers.openMemberModal('${m.id}')">
+                <div class="w-full ${maxWidth} group relative bg-gradient-to-br from-[#74040E] to-[#4a0309] rounded-[2rem] overflow-hidden shadow-lg hover:shadow-primary/30 transition-all duration-500 cursor-pointer border border-white/10" onclick="window.Renderers.openMemberModal('${m.id}')">
                     <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/hexellence.png')] opacity-10"></div>
                     <div class="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent"></div>
                     
-                    <div class="relative p-5 md:p-8 flex items-center gap-5 md:gap-8">
+                    <div class="relative ${padding} flex items-center gap-5 md:gap-10">
                         <!-- Image Section -->
                         <div class="relative shrink-0">
-                            <div class="w-24 h-32 md:w-36 md:h-48 rounded-2xl overflow-hidden border-2 border-white/10 shadow-2xl group-hover:scale-105 transition-transform duration-700 bg-white/5 backdrop-blur-sm">
+                            <div class="${imgSize} rounded-2xl overflow-hidden border-2 border-white/10 shadow-2xl group-hover:scale-105 transition-transform duration-700 bg-white/5 backdrop-blur-sm">
                                 ${photoHtml}
                             </div>
                         </div>
@@ -232,8 +258,8 @@ window.Renderers = {
                         <!-- Content Section -->
                         <div class="text-left flex-1 text-white">
                             <span class="bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-3 py-1 rounded-full text-[10px] md:text-xs font-black mb-3 inline-block uppercase tracking-wider shadow-lg italic transition-transform group-hover:-translate-y-0.5">${categoryTitle}</span>
-                            <h3 class="text-xl md:text-4xl font-black mb-1 leading-tight drop-shadow-md">${m.name}</h3>
-                            <p class="text-yellow-400 text-sm md:text-xl mb-4 font-bold uppercase tracking-widest opacity-90">${m.position}</p>
+                            <h3 class="${nameSize} font-black mb-1 leading-tight drop-shadow-md">${m.name}</h3>
+                            <p class="text-yellow-400 ${posSize} mb-4 font-bold uppercase tracking-widest opacity-90">${m.position}</p>
                             
                             ${motto ? `
                             <div class="relative">
