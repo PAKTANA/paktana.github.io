@@ -10,6 +10,7 @@ window.AdminManagement = {
         this.setupGalleryForm();
         this.setupSliderForm();
         this.setupContactEditForm();
+        this.setupSummaryEditForm();
     },
 
     // --- Member Management ---
@@ -773,6 +774,38 @@ window.AdminManagement = {
             window.Helpers.showSuccessToast('บันทึกข้อมูลติดต่อเรียบร้อย');
             window.Modals.closeModal('contactEditModal');
         });
+    },
+
+    // --- Home Summary Edit ---
+    openSummaryEditModal() {
+        if (!window.AppState.isAdminLoggedIn) return;
+
+        const heading = document.getElementById('summaryHeading').innerText;
+        const intro = document.getElementById('summaryIntro').innerText;
+
+        document.getElementById('editSummaryHeading').value = heading;
+        document.getElementById('editSummaryIntro').value = intro;
+
+        window.Modals.openModal('summaryEditModal');
+    },
+
+    setupSummaryEditForm() {
+        const form = document.getElementById('summaryEditForm');
+        if (!form) return;
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const heading = document.getElementById('editSummaryHeading').value;
+            const intro = document.getElementById('editSummaryIntro').value;
+
+            // Update UI
+            document.getElementById('summaryHeading').innerText = heading;
+            document.getElementById('summaryIntro').innerText = intro;
+
+            window.Helpers.showSuccessToast('บันทึกข้อมูลหน้าแรกเรียบร้อย');
+            window.Modals.closeModal('summaryEditModal');
+        });
     }
 };
 
@@ -789,3 +822,4 @@ window.openHeroSlideModal = () => window.AdminManagement.openHeroSlideModal();
 window.openGalleryManagementModal = (id) => window.AdminManagement.openGalleryManagementModal(id);
 window.deletePolicy = () => window.AdminManagement.deletePolicy();
 window.openContactEditModal = () => window.AdminManagement.openContactEditModal();
+window.openSummaryEditModal = () => window.AdminManagement.openSummaryEditModal();
