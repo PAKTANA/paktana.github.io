@@ -148,8 +148,8 @@ body:not(.admin-active) .admin-only {
 }
 
 .slide {
-    flex: 0 0 100%;
-    width: 100%;
+    min-width: 100%;
+    flex-shrink: 0;
     height: 100%;
     position: relative;
     display: flex;
