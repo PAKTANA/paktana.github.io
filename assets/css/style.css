@@ -1009,11 +1009,11 @@ footer {
     }
 
     .hero-slider {
-        height: 400px;
+        height: 350px;
     }
 
     .slide-content {
-        padding-top: 60px !important;
+        padding-top: 40px !important;
     }
 
     .slider-arrow {
@@ -1144,22 +1144,23 @@ footer {
     /* Extra Small Screen Adjustments */
     @media (max-width: 480px) {
         .hero-slider {
-            height: 340px !important;
+            height: 240px !important;
         }
 
         .hero-slider h1 {
-            font-size: 1.5rem !important;
-            margin-bottom: 8px !important;
+            font-size: 1.4rem !important;
+            margin-bottom: 6px !important;
+            line-height: 1.2 !important;
         }
 
         .hero-slider p:not(.text-yellow-400) {
-            font-size: 0.85rem !important;
+            font-size: 0.8rem !important;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            line-height: 1.4 !important;
+            line-height: 1.3 !important;
         }
 
         .hero-slider p.text-yellow-400 {
@@ -1174,7 +1175,7 @@ footer {
         }
 
         .slide-content {
-            padding: 40px 12px 0 !important;
+            padding: 25px 12px 0 !important;
         }
 
         .slider-nav {
