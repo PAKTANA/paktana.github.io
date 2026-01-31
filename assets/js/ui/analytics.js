@@ -1,14 +1,19 @@
 window.AnalyticsUI = {
     async fetchAnalyticsData() {
         try {
-            const visitors = await window.AnalyticsService.fetchTotalVisitors();
+            // SPEED UP: Fetch all analytics data in parallel using Promise.all
+            const [visitors, pageViews, ratings] = await Promise.all([
+                window.AnalyticsService.fetchTotalVisitors(),
+                window.AnalyticsService.fetchPageViews(),
+                window.AnalyticsService.fetchRatings()
+            ]);
+
+            // 1. Update Total Visitors UI
             if (document.getElementById('totalVisitorsDisplay')) {
                 document.getElementById('totalVisitorsDisplay').textContent = (visitors || 0).toLocaleString();
             }
 
-            const pageViews = await window.AnalyticsService.fetchPageViews();
-            const container = document.getElementById('analyticsPageViews');
-
+            // 2. Setup Page Labels
             const labelsMap = {
                 'home': 'หน้าแรก',
                 'policies': 'นโยบาย',
@@ -22,6 +27,8 @@ window.AnalyticsUI = {
                 'gallery': 'แกลเลอรี่'
             };
 
+            // 3. Update Page Views List UI
+            const container = document.getElementById('analyticsPageViews');
             if (container) {
                 if (pageViews && pageViews.length > 0) {
                     pageViews.sort((a, b) => b.view_count - a.view_count);
@@ -55,7 +62,7 @@ window.AnalyticsUI = {
                 }
             }
 
-            const ratings = await window.AnalyticsService.fetchRatings();
+            // 4. Update Ratings & Feedback UI
             if (ratings && ratings.length > 0) {
                 const total = ratings.length;
                 const avg = ratings.reduce((acc, r) => acc + r.rating, 0) / total;
