@@ -132,6 +132,10 @@
             </a>
             <a href="#" class="mobile-nav-link" data-page="contact"
                 onclick="toggleMobileMenu(); navigateToPage('contact')">
+                <i>📢</i> เสนอนโยบาย
+            </a>
+            <a href="#" class="mobile-nav-link" data-page="contact_us_new"
+                onclick="toggleMobileMenu(); navigateToPage('contact_us_new')">
                 <i>✉️</i> ติดต่อสอบถาม
             </a>
             <hr class="border-gray-100 my-2">
@@ -282,13 +286,13 @@
         </section>
     </div>
 
-    <!-- Page: Contact -->
+    <!-- Page: Propose Policy (Formerly Contact) -->
     <div class="page" data-page="contact">
         <section class="section-padding bg-section-bg">
             <div class="max-w-4xl mx-auto">
                 <div class="bg-white rounded-3xl shadow-2xl overflow-hidden">
                     <div class="p-10 md:p-14">
-                        <h2 class="text-4xl font-bold text-heading mb-8 font-serif text-center">ติดต่อเรา</h2>
+                        <h2 class="text-4xl font-bold text-heading mb-8 font-serif text-center">เสนอนโยบาย</h2>
                         <form id="contactForm" class="space-y-6">
                             <div class="grid md:grid-cols-2 gap-6">
                                 <div>
@@ -319,6 +323,117 @@
                             </div>
                             <button type="submit"
                                 class="w-full bg-secondary hover:bg-yellow-500 text-blue-900 font-bold py-4 rounded-xl text-lg transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                                ส่งนโยบาย
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Page: Contact Us New -->
+    <div class="page" data-page="contact_us_new">
+        <section class="section-padding bg-section-bg">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-12">
+                    <p class="text-gray-500 text-lg">ยินดีรับฟังความคิดเห็นและข้อเสนอแนะจากคุณ</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Left: Contact Info -->
+                    <div
+                        class="bg-white rounded-3xl p-10 shadow-lg border border-gray-100 flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-2xl font-bold text-heading mb-8">ข้อมูลติดต่อ</h3>
+
+                            <div class="space-y-8">
+                                <div class="flex items-start gap-4">
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
+                                        📧
+                                    </div>
+                                    <div>
+                                        <h5 class="font-bold text-gray-900">อีเมล</h5>
+                                        <p class="text-gray-500">info@learningparty.th</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start gap-4">
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
+                                        📱
+                                    </div>
+                                    <div>
+                                        <h5 class="font-bold text-gray-900">โทรศัพท์</h5>
+                                        <p class="text-gray-500">02-XXX-XXXX</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start gap-4">
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
+                                        📍
+                                    </div>
+                                    <div>
+                                        <h5 class="font-bold text-gray-900">ที่อยู่</h5>
+                                        <p class="text-gray-500">123 ถนนการศึกษา แขวงวัฒนา<br>เขตวัฒนา กรุงเทพฯ 10110
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-12">
+                            <h3 class="text-xl font-bold text-heading mb-6">ติดตามเรา</h3>
+                            <div class="flex gap-4">
+                                <a href="#"
+                                    class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:scale-110 transition-transform"><i
+                                        class="fab fa-facebook-f"></i></a>
+                                <a href="#"
+                                    class="w-10 h-10 rounded-full bg-pink-500 text-white flex items-center justify-center hover:scale-110 transition-transform"><i
+                                        class="fab fa-instagram"></i></a>
+                                <a href="#"
+                                    class="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center hover:scale-110 transition-transform"><i
+                                        class="fab fa-tiktok"></i></a>
+                                <a href="#"
+                                    class="w-10 h-10 rounded-full bg-blue-800 text-white flex items-center justify-center hover:scale-110 transition-transform"><i
+                                        class="fab fa-linkedin-in"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Contact Form -->
+                    <div class="bg-white rounded-3xl p-10 shadow-lg border border-gray-100">
+                        <h3 class="text-2xl font-bold text-heading mb-8">ส่งข้อความถึงเรา</h3>
+                        <form id="contactUsNewForm" class="space-y-6">
+                            <div>
+                                <label class="block text-gray-700 font-bold mb-2">ชื่อ-นามสกุล *</label>
+                                <input type="text" id="newContactName" placeholder="กรอกชื่อ-นามสกุล" required
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-blue-500 transition-all outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 font-bold mb-2">อีเมล *</label>
+                                <input type="email" id="newContactEmail" placeholder="example@email.com" required
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-blue-500 transition-all outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 font-bold mb-2">หัวข้อ *</label>
+                                <select id="newContactSubject" required
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-blue-500 transition-all outline-none text-gray-500">
+                                    <option value="" disabled selected>เลือกหัวข้อ...</option>
+                                    <option value="general">สอบถามทั่วไป</option>
+                                    <option value="support">แจ้งปัญหาการใช้งาน</option>
+                                    <option value="other">อื่นๆ</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 font-bold mb-2">ข้อความ *</label>
+                                <textarea id="newContactMessage" rows="4" placeholder="กรอกข้อความของคุณ..." required
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-blue-500 transition-all outline-none"></textarea>
+                            </div>
+                            <button type="submit"
+                                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl text-lg transition-all shadow-lg hover:shadow-blue-500/30">
                                 ส่งข้อความ
                             </button>
                         </form>

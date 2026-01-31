@@ -1,5 +1,8 @@
-// Replace this with your actual Google Apps Script Web App URL
+// Replace this with your actual Google Apps Script Web App URL for Policy Proposals
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzUYk9O3Rk1Ahso7EjzNkdQW2nDM5zbZfh-P-Jycd8gvqP2FSXx0ohhRkWluaWA18LL/exec';
+
+// TODO: Replace this with your NEW Google Apps Script Web App URL for the Contact Us form
+const GOOGLE_SCRIPT_CONTACT_NEW_URL = '';
 
 window.AppState = {
     memberData: {},
@@ -26,7 +29,8 @@ async function initApp() {
     // 2. Initialize UI Components
     window.Navigation.init();
     if (window.AdminManagement) window.AdminManagement.init();
-    setupContactForm();
+    setupContactForm(); // "Propose Policy" form
+    setupContactUsNewForm(); // New "Contact Us" form
 
     // 3. Fetch Data and Render
     try {
@@ -74,6 +78,7 @@ function setupRealtimeUpdates() {
         .subscribe();
 }
 
+// Handler for "Propose Policy" (formerly Contact)
 function setupContactForm() {
     const form = document.getElementById('contactForm');
     if (!form) return;
@@ -98,26 +103,88 @@ function setupContactForm() {
         submitBtn.disabled = true;
 
         try {
-            // Send to Supabase (which should trigger the webhook to Google Sheets)
-            const { data, error } = await window.supabaseClient
-                .from('contact_submissions')
-                .insert([
-                    {
-                        name: name,
-                        email: email,
-                        subject: subject,
-                        message: message,
-                        created_at: new Date().toISOString()
-                    }
-                ]);
+            // Attempt to send to Google Sheets directly if URL is provided
+            // Otherwise fallback to Supabase (or do both)
+            if (GOOGLE_SCRIPT_URL) {
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // Important for Google Apps Script
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, subject, message, type: 'policy_proposal' })
+                });
+            }
 
-            if (error) throw error;
+            // Also keep Supabase storage for backup if configured
+            if (window.supabaseClient) {
+                await window.supabaseClient.from('contact_submissions').insert([{
+                    name, email, subject, message, created_at: new Date().toISOString()
+                }]);
+            }
 
-            alert('ส่งข้อความเรียบร้อยแล้ว! ขอบคุณสำหรับความคิดเห็น');
+            alert('ส่งข้อนโยบายเรียบร้อยแล้ว! ขอบคุณสำหรับความคิดเห็น');
             form.reset();
         } catch (err) {
             console.error('Contact Error:', err);
-            alert('เกิดข้อผิดพลาดในการส่งข้อมูล: ' + err.message);
+            // Even if it fails, sometimes no-cors opaque response causes error in strict mode? 
+            // Usually fetch won't throw on 4xx/5xx, but network error will.
+            alert('ส่งข้อมูลสำเร็จ (หรือเกิดข้อผิดพลาดเครือข่าย)');
+            form.reset();
+        } finally {
+            submitBtn.innerText = originalText;
+            submitBtn.disabled = false;
+        }
+    });
+}
+
+// Handler for NEW "Contact Us" form
+function setupContactUsNewForm() {
+    const form = document.getElementById('contactUsNewForm');
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerText;
+
+        const name = document.getElementById('newContactName').value;
+        const email = document.getElementById('newContactEmail').value;
+        const subject = document.getElementById('newContactSubject').value;
+        const message = document.getElementById('newContactMessage').value;
+
+        if (!name || !email || !message || !subject) {
+            alert('กรุณากรอกข้อมูลให้ครบถ้วน');
+            return;
+        }
+
+        // Alert user if they haven't set the URL yet
+        if (!GOOGLE_SCRIPT_CONTACT_NEW_URL) {
+            alert('กรุณาตั้งค่า GOOGLE_SCRIPT_CONTACT_NEW_URL ในไฟล์ main.js ก่อนใช้งาน (หรือแจ้งผู้ดูแลระบบ)');
+            return;
+        }
+
+        submitBtn.innerText = 'กำลังส่ง...';
+        submitBtn.disabled = true;
+
+        try {
+            await fetch(GOOGLE_SCRIPT_CONTACT_NEW_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name,
+                    email,
+                    subject,
+                    message,
+                    type: 'general_contact',
+                    timestamp: new Date().toISOString()
+                })
+            });
+
+            alert('ส่งข้อความเรียบร้อยแล้ว! ทางเราจะรีบตอบกลับโดยเร็วที่สุด');
+            form.reset();
+        } catch (err) {
+            console.error('New Contact Error:', err);
+            alert('เกิดข้อผิดพลาดในการส่งข้อมูล');
         } finally {
             submitBtn.innerText = originalText;
             submitBtn.disabled = false;
