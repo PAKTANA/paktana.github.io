@@ -809,6 +809,12 @@ window.Renderers = {
                 ${slides.map((_, i) => `<div class="slider-dot ${i === 0 ? 'active' : ''}" onclick="window.goToSlide(${i})"></div>`).join('')}
             </div>
         `;
+
+        // Reset and Initialize Slider State to prevent sync issues
+        window.HeroSlider.currentSlide = 0;
+        window.HeroSlider.init();
+        // Force initial position set (though usually 0 is default)
+        window.HeroSlider.showSlide(0);
     },
     // --- Utils ---
     setupSmoothScroll() {
