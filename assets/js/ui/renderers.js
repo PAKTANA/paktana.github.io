@@ -819,13 +819,20 @@ window.Renderers = {
             return;
         }
 
+        const isActivities = window.AppState.currentCarouselSource === 'activities';
+
         const slidesHtml = slides.map((s, i) => `
-            <div class="slide ${i === 0 ? 'active' : ''}" style="background-image: url('${s.image_url}')">
-                <div class="slide-overlay"></div>
-                <div class="slide-content">
-                    <h1 class="text-4xl md:text-6xl font-bold mb-4 font-serif text-shadow">${s.title}</h1>
-                    <p class="text-lg md:text-2xl text-gray-200 max-w-2xl mx-auto text-shadow">${s.caption || ''}</p>
-                </div>
+            <div class="slide ${i === 0 ? 'active' : ''} ${isActivities ? 'slide-gallery' : ''}" ${!isActivities ? `style="background-image: url('${s.image_url}')"` : ''}>
+                ${isActivities ? `
+                    <div class="slide-bg-blur" style="background-image: url('${s.image_url}')"></div>
+                    <img src="${s.image_url}" class="slide-img-contain" alt="${s.title}">
+                ` : `
+                    <div class="slide-overlay"></div>
+                    <div class="slide-content">
+                        <h1 class="text-4xl md:text-6xl font-bold mb-4 font-serif text-shadow">${s.title}</h1>
+                        <p class="text-lg md:text-2xl text-gray-200 max-w-2xl mx-auto text-shadow">${s.caption || ''}</p>
+                    </div>
+                `}
             </div>
         `).join('');
 

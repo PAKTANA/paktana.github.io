@@ -3,8 +3,12 @@ const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyWfygOuyQHdk
 
 window.AppState = {
     memberData: {},
-    galleryData: {},
+    galleryData: {}, // Lookup object
+    galleryDataArray: [], // Array for list
     policyData: [],
+    heroSlides: [],
+    gallerySlides: [],
+    currentCarouselSource: 'general',
     isAdminLoggedIn: false
 };
 
@@ -12,9 +16,43 @@ window.AppState = {
 window.fetchHeroSlides = async () => {
     try {
         const slides = await window.SliderService.fetchHeroSlides();
-        window.Renderers.renderHeroSlides(slides);
+        window.AppState.heroSlides = slides;
+
+        // Only render if current source is general
+        if (window.AppState.currentCarouselSource === 'general') {
+            window.Renderers.renderHeroSlides(slides);
+        }
     } catch (err) {
         console.error('Error fetching/rendering slides:', err);
+    }
+};
+
+window.switchCarouselSource = (source) => {
+    if (window.AppState.currentCarouselSource === source) return;
+
+    window.AppState.currentCarouselSource = source;
+
+    // Update Button UI
+    const btnGeneral = document.getElementById('btnSourceGeneral');
+    const btnActivities = document.getElementById('btnSourceActivities');
+
+    if (source === 'general') {
+        btnGeneral.classList.add('active');
+        btnActivities.classList.remove('active');
+        window.Renderers.renderHeroSlides(window.AppState.heroSlides);
+    } else {
+        btnActivities.classList.add('active');
+        btnGeneral.classList.remove('active');
+
+        // Always refresh gallery slides from galleryDataArray to stay in sync
+        if (window.AppState.galleryDataArray && window.AppState.galleryDataArray.length > 0) {
+            window.AppState.gallerySlides = window.AppState.galleryDataArray.map(item => ({
+                image_url: item.image_url,
+                title: item.title,
+                caption: item.description ? item.description.split('<METADATA>')[0] : ''
+            }));
+        }
+        window.Renderers.renderHeroSlides(window.AppState.gallerySlides);
     }
 };
 
@@ -42,6 +80,15 @@ async function initApp() {
 
         window.Renderers.renderMembers(members);
         window.Renderers.renderPolicies(policies);
+
+        // Store for switcher
+        window.AppState.galleryDataArray = gallery;
+        window.AppState.gallerySlides = gallery.map(item => ({
+            image_url: item.image_url,
+            title: item.title,
+            caption: item.description ? item.description.split('<METADATA>')[0] : ''
+        }));
+
         window.Renderers.renderGallery(gallery);
 
         // Load slides via the global function
@@ -70,7 +117,18 @@ function setupRealtimeUpdates() {
             window.PolicyService.fetchPolicies().then(p => window.Renderers.renderPolicies(p));
         })
         .on('postgres_changes', { event: '*', schema: 'public', table: 'gallery' }, () => {
-            window.GalleryService.fetchGallery().then(g => window.Renderers.renderGallery(g));
+            window.GalleryService.fetchGallery().then(g => {
+                window.AppState.galleryDataArray = g;
+                window.AppState.gallerySlides = g.map(item => ({
+                    image_url: item.image_url,
+                    title: item.title,
+                    caption: item.description ? item.description.split('<METADATA>')[0] : ''
+                }));
+                window.Renderers.renderGallery(g);
+                if (window.AppState.currentCarouselSource === 'activities') {
+                    window.Renderers.renderHeroSlides(window.AppState.gallerySlides);
+                }
+            });
         })
         .on('postgres_changes', { event: '*', schema: 'public', table: 'hero_slides' }, () => {
             window.fetchHeroSlides();

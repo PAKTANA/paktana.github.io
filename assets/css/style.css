@@ -147,6 +147,32 @@ body:not(.admin-active) .admin-only {
     transition: opacity 1.2s ease-in-out, visibility 0s linear 0s;
 }
 
+.slide.slide-contain {
+    background-size: contain;
+    background-color: #0f172a;
+    /* Dark background matches footer */
+}
+
+.slide-bg-blur {
+    position: absolute;
+    inset: -20px;
+    background-size: cover;
+    background-position: center;
+    filter: blur(30px) brightness(0.6);
+    z-index: 1;
+    transform: scale(1.1);
+}
+
+.slide-img-contain {
+    position: relative;
+    z-index: 2;
+    max-height: 90%;
+    max-width: 90%;
+    object-fit: contain;
+    border-radius: 12px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
 /* Slide animations or states can be added here */
 
 .slide-overlay {
@@ -207,6 +233,37 @@ body:not(.admin-active) .admin-only {
     background: var(--secondary);
     width: 40px;
     border-radius: 6px;
+}
+
+/* Carousel Switcher Styles */
+.carousel-switch-btn {
+    color: rgba(255, 255, 255, 0.7);
+    border: 1px solid transparent;
+}
+
+.carousel-switch-btn.active {
+    background: white;
+    color: var(--primary) !important;
+    opacity: 1 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.carousel-switch-btn:not(.active):hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 768px) {
+    .carousel-switcher {
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        justify-content: center;
+    }
+
+    .carousel-switch-btn {
+        padding: 8px 12px;
+        font-size: 10px;
+    }
 }
 
 .slider-arrow {
