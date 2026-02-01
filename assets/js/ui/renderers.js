@@ -183,7 +183,7 @@ window.Renderers = {
                         <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/hexellence.png')] opacity-10"></div>
                         <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                         
-                        <div class="relative p-8 md:p-12 flex flex-col md:flex-row items-center gap-8 md:gap-14">
+                        <div class="relative p-6 md:p-12 flex flex-col md:flex-row items-center gap-6 md:gap-14">
                             <!-- Image Section (Portrait Rectangle) -->
                             <div class="relative shrink-0">
                                 <div class="w-48 h-64 md:w-64 md:h-80 rounded-3xl overflow-hidden border-4 border-white/10 shadow-2xl group-hover:scale-105 transition-transform duration-700 bg-white/5 backdrop-blur-sm">
@@ -209,7 +209,7 @@ window.Renderers = {
                                 </div>
                                 ` : ''}
 
-                                <div class="mt-10 flex items-center justify-center md:justify-start gap-3 opacity-0 group-hover:opacity-100 transition-all transform translate-y-4 group-hover:translate-y-0 text-xs font-bold tracking-widest">
+                                <div class="mt-8 md:mt-10 flex items-center justify-center md:justify-start gap-3 opacity-0 group-hover:opacity-100 transition-all transform translate-y-4 group-hover:translate-y-0 text-xs font-bold tracking-widest">
                                     <span class="px-5 py-2.5 bg-white/10 rounded-full backdrop-blur-md border border-white/10 text-yellow-400 border-yellow-400/30">CLICK TO VIEW PROFILE</span>
                                 </div>
                             </div>
@@ -247,16 +247,16 @@ window.Renderers = {
                     <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/hexellence.png')] opacity-10"></div>
                     <div class="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent"></div>
                     
-                    <div class="relative ${padding} flex items-center gap-5 md:gap-10">
+                    <div class="relative ${padding} flex flex-col sm:flex-row items-center sm:items-start gap-5 md:gap-10">
                         <!-- Image Section -->
-                        <div class="relative shrink-0">
+                        <div class="relative shrink-0 flex justify-center w-full sm:w-auto">
                             <div class="${imgSize} rounded-2xl overflow-hidden border-2 border-white/10 shadow-2xl group-hover:scale-105 transition-transform duration-700 bg-white/5 backdrop-blur-sm">
                                 ${photoHtml}
                             </div>
                         </div>
 
                         <!-- Content Section -->
-                        <div class="text-left flex-1 text-white pr-2 md:pr-4 min-w-0">
+                        <div class="text-center sm:text-left flex-1 text-white pr-0 sm:pr-4 min-w-0">
                             <span class="bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-3 py-1 rounded-full text-[10px] md:text-xs font-black mb-3 inline-block uppercase tracking-wider shadow-lg italic transition-transform group-hover:-translate-y-0.5">${categoryTitle}</span>
                             <h3 class="${nameSize} font-black mb-1 leading-tight drop-shadow-md" title="${m.name}">${m.name}</h3>
                             <p class="text-yellow-400 ${posSize} mb-4 font-bold uppercase tracking-widest opacity-90">${m.position}</p>
