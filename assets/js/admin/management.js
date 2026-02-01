@@ -412,6 +412,7 @@ window.AdminManagement = {
         if (form) form.reset();
         this.selectedGalleryFiles = [];
         document.getElementById('manageGalleryId').value = id || '';
+        document.getElementById('manageGalleryRank').value = '10'; // Default rank
         document.getElementById('galleryPreviewGrid').innerHTML = '';
         document.getElementById('deleteItemBtn').style.display = id ? 'block' : 'none';
 
@@ -430,6 +431,7 @@ window.AdminManagement = {
                     try {
                         const meta = JSON.parse(parts[1]);
                         existingImages = meta.images || [];
+                        document.getElementById('manageGalleryRank').value = meta.rank || '10';
                     } catch (e) {
                         console.error('Failed to parse metadata from description:', e);
                     }
@@ -507,7 +509,8 @@ window.AdminManagement = {
 
                 // Store in format compatible with current database (using description for metadata)
                 const pureDescription = document.getElementById('manageGalleryDesc').value;
-                const metadataStr = JSON.stringify({ images: imageUrls });
+                const rank = parseInt(document.getElementById('manageGalleryRank').value) || 10;
+                const metadataStr = JSON.stringify({ images: imageUrls, rank: rank });
                 const combinedDescription = pureDescription + '<METADATA>' + metadataStr;
 
                 const payload = {

@@ -81,7 +81,22 @@ async function initApp() {
         window.Renderers.renderMembers(members);
         window.Renderers.renderPolicies(policies);
 
-        // Store for switcher
+        // Store and sort for switcher
+        gallery.sort((a, b) => {
+            let rankA = 10, rankB = 10;
+            try {
+                if (a.description && a.description.includes('<METADATA>')) {
+                    rankA = JSON.parse(a.description.split('<METADATA>')[1]).rank || 10;
+                }
+            } catch (e) { }
+            try {
+                if (b.description && b.description.includes('<METADATA>')) {
+                    rankB = JSON.parse(b.description.split('<METADATA>')[1]).rank || 10;
+                }
+            } catch (e) { }
+            return rankA - rankB;
+        });
+
         window.AppState.galleryDataArray = gallery;
         window.AppState.gallerySlides = gallery.map(item => ({
             image_url: item.image_url,
@@ -118,6 +133,22 @@ function setupRealtimeUpdates() {
         })
         .on('postgres_changes', { event: '*', schema: 'public', table: 'gallery' }, () => {
             window.GalleryService.fetchGallery().then(g => {
+                // Sort by rank from metadata
+                g.sort((a, b) => {
+                    let rankA = 10, rankB = 10;
+                    try {
+                        if (a.description && a.description.includes('<METADATA>')) {
+                            rankA = JSON.parse(a.description.split('<METADATA>')[1]).rank || 10;
+                        }
+                    } catch (e) { }
+                    try {
+                        if (b.description && b.description.includes('<METADATA>')) {
+                            rankB = JSON.parse(b.description.split('<METADATA>')[1]).rank || 10;
+                        }
+                    } catch (e) { }
+                    return rankA - rankB;
+                });
+
                 window.AppState.galleryDataArray = g;
                 window.AppState.gallerySlides = g.map(item => ({
                     image_url: item.image_url,
