@@ -824,7 +824,7 @@ window.Renderers = {
                 <div class="slide-overlay"></div>
                 <div class="slide-content">
                     <h1 class="text-4xl md:text-6xl font-bold mb-4 font-serif text-shadow">${s.title}</h1>
-                    <p class="text-lg md:text-2xl text-gray-200 max-w-2xl mx-auto">${s.caption || ''}</p>
+                    <p class="text-lg md:text-2xl text-gray-200 max-w-2xl mx-auto text-shadow">${s.caption || ''}</p>
                 </div>
             </div>
         `).join('');
