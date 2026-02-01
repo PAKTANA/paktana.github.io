@@ -273,7 +273,7 @@ body:not(.admin-active) .admin-only {
         border-radius: 0 !important;
         width: 100% !important;
         max-width: none !important;
-        margin: 0 !important;
+        margin: 12px 0 0 0 !important;
         background: white !important;
         border-bottom: 2px solid #f0f0f0 !important;
         padding: 8px !important;
@@ -363,12 +363,12 @@ body:not(.admin-active) .admin-only {
     }
 
     .slider-dot {
-        width: 8px;
-        height: 8px;
+        width: 6px;
+        height: 6px;
     }
 
     .slider-dot.active {
-        width: 24px;
+        width: 20px;
     }
 }
 
