@@ -192,9 +192,9 @@ window.Renderers = {
                             </div>
 
                             <!-- Content Section -->
-                            <div class="text-center md:text-left flex-1 text-white">
+                            <div class="text-center md:text-left flex-1 text-white pr-4 md:pr-12">
                                 <span class="bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-5 py-2 rounded-full text-xs md:text-sm font-black mb-6 inline-block uppercase tracking-[0.2em] shadow-lg transform group-hover:-translate-y-1 transition-transform italic">${categoryTitle}</span>
-                                <h3 class="text-3xl md:text-6xl font-black mb-2 tracking-tight leading-tight drop-shadow-lg whitespace-nowrap truncate" title="${m.name}">${m.name}</h3>
+                                <h3 class="text-3xl md:text-5xl font-black mb-2 tracking-tight leading-tight drop-shadow-lg" title="${m.name}">${m.name}</h3>
                                 <p class="text-yellow-400 text-lg md:text-2xl mb-8 font-bold uppercase tracking-widest opacity-90">${m.position}</p>
                                 
                                 ${motto ? `
@@ -222,23 +222,23 @@ window.Renderers = {
         // --- NEW: HIERARCHICAL HORIZONTAL CARD FOR MEMBER DIRECTORY PAGE ---
         if (!isHome) {
             // Sizing Logic
-            let maxWidth = 'max-w-md';
+            let maxWidth = 'max-w-lg';
             let imgSize = 'w-24 h-32 md:w-36 md:h-48';
-            let nameSize = 'text-xl md:text-3xl';
-            let posSize = 'text-sm md:text-lg';
+            let nameSize = 'text-xl md:text-2xl';
+            let posSize = 'text-sm md:text-base';
             let padding = 'p-5 md:p-8';
 
             if (size === 'large') {
-                maxWidth = 'max-w-4xl';
+                maxWidth = 'max-w-5xl';
                 imgSize = 'w-32 h-44 md:w-56 md:h-72';
-                nameSize = 'text-3xl md:text-5xl';
-                posSize = 'text-lg md:text-2xl';
+                nameSize = 'text-3xl md:text-4xl';
+                posSize = 'text-lg md:text-xl';
                 padding = 'p-8 md:p-12';
             } else if (size === 'medium') {
-                maxWidth = 'max-w-2xl';
+                maxWidth = 'max-w-3xl';
                 imgSize = 'w-28 h-38 md:w-44 md:h-60';
-                nameSize = 'text-2xl md:text-4xl';
-                posSize = 'text-base md:text-xl';
+                nameSize = 'text-2xl md:text-3xl';
+                posSize = 'text-base md:text-lg';
                 padding = 'p-6 md:p-10';
             }
 
@@ -256,10 +256,10 @@ window.Renderers = {
                         </div>
 
                         <!-- Content Section -->
-                        <div class="text-left flex-1 text-white">
+                        <div class="text-left flex-1 text-white pr-6 md:pr-10">
                             <span class="bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-3 py-1 rounded-full text-[10px] md:text-xs font-black mb-3 inline-block uppercase tracking-wider shadow-lg italic transition-transform group-hover:-translate-y-0.5">${categoryTitle}</span>
-                            <h3 class="${nameSize} font-black mb-1 leading-tight drop-shadow-md whitespace-nowrap truncate" title="${m.name}">${m.name}</h3>
-                            <p class="text-yellow-400 ${posSize} mb-4 font-bold uppercase tracking-widest opacity-90">${m.position}</p>
+                            <h3 class="${nameSize} font-black mb-1 leading-tight drop-shadow-md" title="${m.name}">${m.name}</h3>
+                            <p class="text-yellow-400 ${posSize} mb-4 font-bold uppercase tracking-widest opacity-90 line-clamp-1">${m.position}</p>
                             
                             ${motto ? `
                             <div class="relative">
@@ -291,9 +291,9 @@ window.Renderers = {
                     <div class="aspect-[4/5] overflow-hidden relative bg-gray-100">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity z-10"></div>
                         ${photoHtml}
-                        <div class="absolute bottom-0 left-0 right-0 p-4 md:p-6 z-20 text-white transform translate-y-2 group-hover:translate-y-0 transition-transform">
+                        <div class="absolute bottom-0 left-0 right-0 p-4 md:p-6 z-20 text-white transform translate-y-2 group-hover:translate-y-0 transition-transform pr-10">
                              <p class="text-[10px] md:text-xs font-bold text-yellow-400 uppercase tracking-wider mb-1 truncate">${categoryTitle}</p>
-                             <h4 class="text-base md:text-xl font-bold leading-tight whitespace-nowrap truncate" title="${m.name}">${m.name}</h4>
+                             <h4 class="text-base md:text-xl font-bold leading-tight" title="${m.name}">${m.name}</h4>
                              <p class="text-[10px] md:text-xs text-white/70 truncate">${m.position}</p>
                         </div>
                     </div>
