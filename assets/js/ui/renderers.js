@@ -262,10 +262,10 @@ window.Renderers = {
                             <p class="text-yellow-400 ${posSize} mb-4 font-bold uppercase tracking-widest opacity-90 line-clamp-1">${m.position}</p>
                             
                             ${motto ? `
-                            <div class="relative">
-                                <div class="flex gap-1">
+                            <div class="relative mt-2">
+                                <div class="flex gap-1.5">
                                     <span class="text-lg md:text-2xl text-yellow-400/30 leading-none shrink-0">“</span>
-                                    <p class="text-[10px] md:text-sm text-white/80 italic font-medium leading-relaxed line-clamp-2">
+                                    <p class="text-[11px] md:text-[13px] text-white/80 italic font-medium leading-relaxed">
                                         ${motto}
                                         <span class="text-lg md:text-2xl text-yellow-400/30 leading-none inline-block align-bottom ml-1">”</span>
                                     </p>
