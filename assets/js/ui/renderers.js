@@ -222,20 +222,20 @@ window.Renderers = {
         // --- NEW: HIERARCHICAL HORIZONTAL CARD FOR MEMBER DIRECTORY PAGE ---
         if (!isHome) {
             // Sizing Logic
-            let maxWidth = 'max-w-lg';
+            let maxWidth = 'max-w-2xl';
             let imgSize = 'w-24 h-32 md:w-36 md:h-48';
             let nameSize = 'text-xl md:text-2xl';
             let posSize = 'text-sm md:text-base';
             let padding = 'p-5 md:p-8';
 
             if (size === 'large') {
-                maxWidth = 'max-w-5xl';
+                maxWidth = 'max-w-6xl';
                 imgSize = 'w-32 h-44 md:w-56 md:h-72';
                 nameSize = 'text-3xl md:text-4xl';
                 posSize = 'text-lg md:text-xl';
                 padding = 'p-8 md:p-12';
             } else if (size === 'medium') {
-                maxWidth = 'max-w-3xl';
+                maxWidth = 'max-w-4xl';
                 imgSize = 'w-28 h-38 md:w-44 md:h-60';
                 nameSize = 'text-2xl md:text-3xl';
                 posSize = 'text-base md:text-lg';
@@ -256,9 +256,9 @@ window.Renderers = {
                         </div>
 
                         <!-- Content Section -->
-                        <div class="text-left flex-1 text-white pr-6 md:pr-10">
+                        <div class="text-left flex-1 text-white pr-2 md:pr-4">
                             <span class="bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-3 py-1 rounded-full text-[10px] md:text-xs font-black mb-3 inline-block uppercase tracking-wider shadow-lg italic transition-transform group-hover:-translate-y-0.5">${categoryTitle}</span>
-                            <h3 class="${nameSize} font-black mb-1 leading-tight drop-shadow-md" title="${m.name}">${m.name}</h3>
+                            <h3 class="${nameSize} font-black mb-1 leading-tight drop-shadow-md whitespace-nowrap" title="${m.name}">${m.name}</h3>
                             <p class="text-yellow-400 ${posSize} mb-4 font-bold uppercase tracking-widest opacity-90 line-clamp-1">${m.position}</p>
                             
                             ${motto ? `
@@ -286,14 +286,14 @@ window.Renderers = {
         // 2. LEADERSHIP (Executive Card - All other leaders - ONLY FOR HOME)
         if (m.category === 'Leadership' || m.category === 'ประธาน' || (isLeader && m.category !== 'Member')) {
             return `
-                <div class="w-full sm:w-[320px] m-4 shrink-0 group relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer border border-gray-100" onclick="window.Renderers.openMemberModal('${m.id}')">
+                <div class="w-full sm:w-[380px] m-4 shrink-0 group relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer border border-gray-100" onclick="window.Renderers.openMemberModal('${m.id}')">
                     <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-400 to-yellow-600"></div>
                     <div class="aspect-[4/5] overflow-hidden relative bg-gray-100">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity z-10"></div>
                         ${photoHtml}
-                        <div class="absolute bottom-0 left-0 right-0 p-4 md:p-6 z-20 text-white transform translate-y-2 group-hover:translate-y-0 transition-transform pr-10">
+                        <div class="absolute bottom-0 left-0 right-0 p-4 md:p-6 z-20 text-white transform translate-y-2 group-hover:translate-y-0 transition-transform pr-12">
                              <p class="text-[10px] md:text-xs font-bold text-yellow-400 uppercase tracking-wider mb-1 truncate">${categoryTitle}</p>
-                             <h4 class="text-base md:text-xl font-bold leading-tight" title="${m.name}">${m.name}</h4>
+                             <h4 class="text-base md:text-xl font-bold leading-tight whitespace-nowrap" title="${m.name}">${m.name}</h4>
                              <p class="text-[10px] md:text-xs text-white/70 truncate">${m.position}</p>
                         </div>
                     </div>
