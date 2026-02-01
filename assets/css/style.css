@@ -81,21 +81,27 @@ body {
 
 @media (max-width: 640px) {
 
-    /* Show smaller white slider arrows on mobile */
+    /* Show simple arrow icons on mobile without circles */
     .slider-arrow {
-        width: 32px;
-        height: 32px;
-        font-size: 16px;
-        background: rgba(255, 255, 255, 0.3);
-        border: 1.5px solid rgba(255, 255, 255, 0.5);
+        width: 40px;
+        height: 40px;
+        font-size: 24px;
+        background: transparent;
+        border: none;
+        border-radius: 0;
+        z-index: 20;
+        color: white;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+        /* Increase touch target */
+        padding: 8px;
     }
 
     .slider-arrow.left {
-        left: 8px;
+        left: 4px;
     }
 
     .slider-arrow.right {
-        right: 8px;
+        right: 4px;
     }
 }
 
