@@ -199,11 +199,11 @@ window.Renderers = {
                                 
                                 ${motto ? `
                                 <div class="relative max-w-2xl mx-auto md:mx-0">
-                                    <div class="flex gap-1">
-                                        <span class="text-4xl text-yellow-400/30 leading-none shrink-0">“</span>
-                                        <p class="text-base md:text-xl text-white/90 italic leading-relaxed line-clamp-4 md:line-clamp-none">
+                                    <div class="flex justify-center md:justify-start gap-1">
+                                        <span class="text-2xl md:text-4xl text-yellow-400/30 leading-none shrink-0">“</span>
+                                        <p class="text-sm md:text-xl text-white/90 italic leading-relaxed">
                                             ${motto}
-                                            <span class="text-4xl text-yellow-400/30 leading-none inline-block align-bottom ml-1">”</span>
+                                            <span class="text-2xl md:text-4xl text-yellow-400/30 leading-none inline-block align-bottom ml-1">”</span>
                                         </p>
                                     </div>
                                 </div>
@@ -263,7 +263,7 @@ window.Renderers = {
                             
                             ${motto ? `
                             <div class="relative mt-2">
-                                <div class="flex gap-1.5">
+                                <div class="flex justify-center sm:justify-start gap-1.5">
                                     <span class="text-lg md:text-2xl text-yellow-400/30 leading-none shrink-0">“</span>
                                     <p class="text-[11px] md:text-[13px] text-white/80 italic font-medium leading-relaxed">
                                         ${motto}
