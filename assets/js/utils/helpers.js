@@ -9,14 +9,26 @@ window.Helpers = {
 
     showSuccessToast(message) {
         const toast = document.createElement('div');
-        toast.className = 'fixed top-20 right-6 bg-green-500 text-white px-6 py-4 rounded-xl shadow-2xl z-[10000] font-semibold';
-        toast.innerHTML = `✓ ${message} `;
+        toast.className = 'fixed top-20 right-6 bg-green-500 text-white px-6 py-4 rounded-xl shadow-2xl z-[10000] font-semibold animate-slide-in';
+        toast.innerHTML = `✓ ${message}`;
         document.body.appendChild(toast);
 
         setTimeout(() => {
-            toast.style.animation = 'fadeOut 0.3s ease';
+            toast.classList.add('animate-fade-out');
             setTimeout(() => toast.remove(), 300);
         }, 2000);
+    },
+
+    showErrorToast(message) {
+        const toast = document.createElement('div');
+        toast.className = 'fixed top-20 right-6 bg-red-500 text-white px-6 py-4 rounded-xl shadow-2xl z-[10000] font-semibold animate-slide-in';
+        toast.innerHTML = `✕ ${message}`;
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.classList.add('animate-fade-out');
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
     },
 
     checkAdminAuth() {
@@ -80,4 +92,5 @@ window.Helpers = {
     }
 };
 window.showSuccessToast = (msg) => window.Helpers.showSuccessToast(msg);
+window.showErrorToast = (msg) => window.Helpers.showErrorToast(msg);
 window.getFileHash = (f) => window.Helpers.getFileHash(f);

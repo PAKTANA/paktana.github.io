@@ -121,12 +121,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 loginForm.reset();
             } catch (err) {
                 console.error(err);
+
+                // Show localized error for common issues
+                let errorMsg = 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง';
+                if (err.message.includes('Email not confirmed')) errorMsg = 'กรุณายืนยันอีเมลก่อนเข้าสู่ระบบ';
+                if (err.message.includes('Rate limit exceeded')) errorMsg = 'พยายามเข้าสู่ระบบมากเกินไป กรุณารอสักครู่';
+
+                window.showErrorToast(errorMsg);
+
                 const msg = document.getElementById('adminLoginMessage');
                 if (msg) {
                     msg.innerHTML = `
                         <div class="flex items-center gap-2 text-red-400 bg-red-900/30 p-3 rounded-lg border border-red-500/30">
                             <span>❌</span>
-                            <span>Login Failed: ${err.message}</span>
+                            <span>เข้าสู่ระบบไม่สำเร็จ: ${errorMsg}</span>
                         </div>
                     `;
                     msg.classList.add('show');
